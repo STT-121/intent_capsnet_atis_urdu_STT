@@ -143,7 +143,7 @@ def split_seen_class_data(from_data_dir, to_data_dir, args):
     
     file_list = [file for file in os.listdir(from_data_dir) if file.endswith('.txt')]
     for file in tqdm(file_list):
-        with open(f"{from_data_dir}/{file}", 'r',encoding= "utf16") as f:
+        with open(f"{from_data_dir}/{file}", 'r',encoding= "utf8") as f:
             lines = f.readlines()
         
         random.seed(args.seed)
@@ -172,7 +172,7 @@ def split_zero_shot_data(from_data_dir, to_data_dir, args):
     
     file_list = [file for file in os.listdir(from_data_dir) if file.endswith('.txt')]
     for file in tqdm(file_list):
-        with open(f"{from_data_dir}/{file}", 'r',encoding= "utf16") as f:
+        with open(f"{from_data_dir}/{file}", 'r',encoding= "utf8") as f:
             lines = f.readlines()
         
         random.seed(args.seed)
