@@ -13,7 +13,7 @@ python /content/intent-capsnet-pytorch/src/main.py \
     --sim_scale=1 \
     --num_layers=1 \
     --ckpt_dir="saved_models" \
-    --data_dir="/content/intent-capsnet-pytorch/data" \
+    --data_dir="/content/intent_capsnet_atis_urdu_STT/data" \
     --raw_dir="raw" \
     --train_frac=0.9 \
     --train_prefix="train" \
