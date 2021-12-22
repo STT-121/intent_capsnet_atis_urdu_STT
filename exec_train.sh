@@ -1,4 +1,4 @@
-python /content/intent-capsnet-pytorch/src/main.py \
+python /content/intent_capsnet_atis_urdu_STT/src/main.py \
     --seed=0 \
     --batch_size=16 \
     --learning_rate=1e-4 \
