@@ -15,7 +15,7 @@ python /content/intent_capsnet_atis_urdu_STT/src/main.py \
     --ckpt_dir="saved_models" \
     --data_dir="/content/intent_capsnet_atis_urdu_STT/data" \
     --raw_dir="raw" \
-    --train_frac=0.9 \
+    --train_frac=0.8\
     --train_prefix="train" \
     --valid_prefix="valid" \
     --model_type="bert_capsnet" \
