@@ -19,6 +19,6 @@ python /content/intent_capsnet_atis_urdu_STT/src/main.py \
     --train_prefix="train" \
     --valid_prefix="valid" \
     --model_type="bert_capsnet" \
-    --mode="zero_shot" \
+    --mode="seen_class" \
     --bert_embedding_frozen="False" \
     --gpu="0"
