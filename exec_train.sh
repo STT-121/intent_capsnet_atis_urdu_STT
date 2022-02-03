@@ -7,8 +7,8 @@ python /content/intent_capsnet_atis_urdu_STT/src/main.py \
     --dropout=0.0 \
     --d_a=80 \
     --num_props=10 \
-    --r=3 \
-    --num_iters=1 \
+    --r=5 \
+    --num_iters=3 \
     --alpha=1e-3 \
     --sim_scale=1 \
     --num_layers=1 \
