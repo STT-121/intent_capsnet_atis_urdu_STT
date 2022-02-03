@@ -26,7 +26,7 @@ class CapsuleNetwork(nn.Module):
         self.encoder = None
         output_size = 0.0
         if self.args.model_type == 'bert_capsnet':
-            self.encoder = BertModel.from_pretrained('bert-base-uncased')
+            self.encoder = BertModel.from_pretrained('bert-base-multilingual-uncased')
             output_size = self.args.hidden_size
 
             # BERT's embedding layer might be frozen in some cases.
