@@ -362,8 +362,8 @@ if __name__=='__main__':
     
 #------------------------------------------------------------------------------------------------------
     print("Reading dataset...")
-    from_data_dir = f"/content/intent-capsnet-pytorch/test"
-    to_data_dir = f"/content/intent-capsnet-pytorch/test/processed"
+    from_data_dir = f"/content/intent_capsnet_atis_urdu_STT/test1"
+    to_data_dir = f"/content/intent_capsnet_atis_urdu_STT/test1/processed"
 
     if not os.path.isdir(to_data_dir):
         os.makedirs(to_data_dir)
