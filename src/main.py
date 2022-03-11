@@ -1,4 +1,4 @@
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
 from torch.utils.data import DataLoader, RandomSampler
 from tqdm import tqdm
 
@@ -106,7 +106,7 @@ def train(args, label_data, train_loader, valid_loader):
         if args.mode == 'zero_shot':
             cur_valid_acc, cur_valid_f1, valid_time, sim = evaluate_zero_shot(args, valid_loader, label_data, model)
         elif args.mode == 'seen_class':
-            cur_valid_acc, cur_valid_f1, valid_time = evaluate_seen_class(valid_loader, model)
+            cur_valid_acc, cur_valid_f1, valid_time, conf = evaluate_seen_class(valid_loader, model)
 
         # If f1 score has increased, save the model.
         if cur_valid_acc > best_valid_acc:
@@ -150,9 +150,42 @@ def evaluate_seen_class(valid_loader, model):
         valid_time = time.time() - start_time
         acc = accuracy_score(y_list, pred_list)
         f1 = f1_score(y_list, pred_list, average='weighted')
+        conf = confusion_matrix(y_list, pred_list)
         
-    return acc, f1, valid_time #,model
-    
+    return acc, f1, valid_time, conf #,model
+###########################################################################
+def evaluate_seen_class2(valid_loader, model):
+    # This is for seen class classification which we usually conduct.
+    model.eval()
+    y_list = []
+    pred_list = []
+
+    # Evaluation starts.
+    with torch.no_grad():
+        start_time = time.time()
+
+        # One batch.
+        for batch in tqdm(valid_loader):
+            batch_x, batch_y, batch_lens, batch_one_hot_label = batch
+            batch_x, batch_y, batch_lens, batch_one_hot_label = sort_batch(batch_x, batch_y, batch_lens,
+                                                                           batch_one_hot_label)
+            batch_x = batch_x.to(args.device)
+
+            attentions, output_logits, prediction_vecs, _ = model(batch_x, batch_lens, is_train=False)
+
+            y_list += batch_y.tolist()
+            pred_list += torch.argmax(output_logits, 1).tolist()
+
+        valid_time = time.time() - start_time
+        acc = accuracy_score(y_list, pred_list)
+        f1 = f1_score(y_list, pred_list, average='weighted')
+        conf = confusion_matrix(y_list, pred_list)
+        
+    return acc, f1, valid_time, conf #,model
+########################################################################    
+
+
+
 
 def evaluate_zero_shot(args, valid_loader, label_data, model):
     model.eval()
@@ -362,12 +395,13 @@ if __name__=='__main__':
     
 #------------------------------------------------------------------------------------------------------
     print("Reading dataset...")
-    from_data_dir = f"/content/intent_capsnet_atis_urdu_STT/test1"
-    to_data_dir = f"/content/intent_capsnet_atis_urdu_STT/test1/processed"
+    from_data_dir = f"/content/intent_capsnet_atis_urdu_STT/test3"
+    to_data_dir = f"/content/intent_capsnet_atis_urdu_STT/test3/processed"
 
     if not os.path.isdir(to_data_dir):
         os.makedirs(to_data_dir)
     train_set, valid_set, args = data_process.read_datasets2(from_data_dir, to_data_dir, args)
+    print("train",type(train_set))
 
     args.train_num_classes = len(train_set.class_dict)
  #   args.valid_num_classes = len(valid_set.class_dict)
@@ -392,9 +426,9 @@ if __name__=='__main__':
     args, label_data, train_loader # valid_loader
 #--------------------------------------------------------------------------
   #acc, f1, valt =evaluate_zero_shot2(args, train_loader, label_data, mm,sim)
-    acc, f1, valt=evaluate_seen_class(valid_loader, mm)
+    acc, f1, valt, conf_matri =evaluate_seen_class2(train_loader, mm)
     print("Testiing accuracy is :",acc)
-
+    print("confusion matrix", conf_matri)
 #-------------------------------------------------------------------------- 
 
     print(mm)
