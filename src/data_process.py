@@ -343,6 +343,7 @@ def read_datasets2(from_data_dir, to_data_dir, args):
     print("Splitting raw data and saving into txt files...") 
     if args.mode == 'seen_class':
         train_data_path, valid_data_path = split_seen_class_data2(from_data_dir, to_data_dir, args)
+        print("in seen class read data set ,", train_data_path)
     else:
         train_data_path, valid_data_path = Nosplit_zero_shot_data(from_data_dir, to_data_dir, args)
         
